@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>登录:物业管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- The styles -->
+    <link id="bs-css" th:href="@{/css/bootstrap-cerulean.min.css}" rel="stylesheet">
+
+    <link th:href="@{/css/charisma-app.css}" rel="stylesheet">
+    <link th:href='@{/css/fullcalendar.css}' rel='stylesheet'>
+    <link th:href='@{/bower_components/fullcalendar/dist/fullcalendar.print.css}' rel='stylesheet' media='print'>
+    <link th:href='@{/css/chosen.min.css}' rel='stylesheet'>
+    <link th:href='@{/css/colorbox.css}' rel='stylesheet'>
+    <link th:href='@{/bower_components/responsive-tables/responsive-tables.css}' rel='stylesheet'>
+    <link th:href='@{/css/jquery.noty.css}' rel='stylesheet'>
+    <link th:href='@{/css/noty_theme_default.css}' rel='stylesheet'>
+    <link th:href='@{/css/elfinder.min.css}' rel='stylesheet'>
+    <link th:href='@{/css/elfinder.theme.css}' rel='stylesheet'>
+    <link th:href='@{/css/jquery.iphone.toggle.css}' rel='stylesheet'>
+    <link th:href='@{/css/uploadify.css}' rel='stylesheet'>
+    <link th:href='@{/css/animate.min.css}' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script th:src="@{/bower_components/jquery/jquery.min.js}"></script>
+
+    <!-- The fav icon -->
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}">
+
+</head>
+
+<body th:style="'background-image: url(' + @{/img/bg.png} + '); background-repeat: no-repeat; background-size:cover; margin: auto;'">
+<div class="ch-container">
+    <div class="row">
+
+        <div class="row">
+            <div class="col-md-12 center login-header">
+                <h1>物业管理系统</h1>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="well col-md-4 center login-box">
+                <div class="alert alert-info">
+                    请输入用户名和密码.
+                </div>
+                <form data-toggle="validator}" class="form-horizontal" th:action="@{/admin/login}"  method="post">
+                    <fieldset>
+                        <div class="form-group col-md-12">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user red"></i></span>
+                                <input type="text}" class="form-control" name="aaccount" placeholder="用户名" required>
+                            </div>
+                            <span class="help-block with-errors"></span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock red"></i></span>
+                                <input type="password}" class="form-control" name="apassword" pattern="^[a-z0-9_]{6,18}$" placeholder="密码由字母、数字或下划线组成,六位以上" required>
+                            </div>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="usertype" value="admin" checked>
+                                <i class="glyphicon glyphicon-home"></i>
+                                管理员登录
+                            </label>
+                            <label>
+                                <input type="radio" name="usertype" value="user">
+                                <i class="glyphicon glyphicon-cog"></i>
+                                业主登录
+                            </label>
+                            <p style="text-align: center;color: red;font-size: 14px;" th:if="${error != null}" th:text="${error}"></p>
+                        </div>
+                        <p class="center col-md-7">
+                            <button type="submit}" class="btn btn-primary">登录系统</button>
+                        </p>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- external javascript -->
+<script th:src="@{/js/validator.min.js}"></script>
+<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+
+<!-- library for cookie management -->
+<script th:src="@{/js/jquery.cookie.js}"></script>
+<!-- calender plugin -->
+<script th:src='@{/bower_components/moment/min/moment.min.js}'></script>
+<script th:src='@{/bower_components/fullcalendar/dist/fullcalendar.min.js}'></script>
+<!-- data table plugin -->
+<script th:src='@{/js/jquery.dataTables.min.js}'></script>
+
+<!-- select or dropdown enhancer -->
+<script th:src="@{/bower_components/chosen/chosen.jquery.min.js}"></script>
+<!-- plugin for gallery image view -->
+<script th:src="@{/bower_components/colorbox/jquery.colorbox-min.js}"></script>
+<!-- notification plugin -->
+<script th:src="@{/js/jquery.noty.js}"></script>
+<!-- library for making tables responsive -->
+<script th:src="@{/bower_components/responsive-tables/responsive-tables.js}"></script>
+<!-- tour plugin -->
+<script th:src="@{/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js}"></script>
+<!-- star rating plugin -->
+<script th:src="@{/js/jquery.raty.min.js}"></script>
+<!-- for iOS style toggle switch -->
+<script th:src="@{/js/jquery.iphone.toggle.js}"></script>
+<!-- autogrowing textarea plugin -->
+<script th:src="@{/js/jquery.autogrow-textarea.js}"></script>
+<!-- multiple file upload plugin -->
+<script th:src="@{/js/jquery.uploadify-3.1.min.js}"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script th:src="@{/js/jquery.history.js}"></script>
+<!-- application script for Charisma demo -->
+<script th:src="@{/js/charisma.js}"></script>
+</body>
+</html>

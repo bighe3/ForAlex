@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjh.communitysadministrativesystem.dao.FeedbackDao">
+
+    <select id="findallFeedback" resultType="Feedback">
+        select * from feedback;
+    </select>
+    <insert id="insertFeedback" parameterType="Feedback">
+        insert into feedback(person, type, status, itime, content, memo,user_id)
+        values (#{person}, #{type}, #{status},#{itime}, #{content}, #{memo},#{user_id});
+    </insert>
+    <delete id="deleteFeedback" parameterType="Integer">
+        delete from feedback where id=#{id};
+    </delete>
+    <update id="updateFeedback" parameterType="Feedback">
+        update feedback
+        set user_id=#{user_id}, person=#{person}, type=#{type}, itime=#{itime},
+            status=#{status}, conductor=#{conductor}, content=#{content}, memo=#{memo}
+        where id=#{id};
+    </update>
+    <select id="findFeedbackById" parameterType="Integer" resultType="Feedback">
+        select * from feedback where id=#{id};
+    </select>
+    <select id="findFeedbackByUserId" parameterType="Integer" resultType="Feedback">
+        select * from feedback where user_id=#{user_id};
+    </select>
+
+</mapper>

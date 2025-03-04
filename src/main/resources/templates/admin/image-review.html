@@ -1,0 +1,35 @@
+<!-- 创建新的审核页面 -->
+<div class="box-content">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>图片预览</th>
+                <th>上传时间</th>
+                <th>业主信息</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="image : ${pendingImages}">
+                <td>
+                    <img th:src="${image.path}" style="width: 100px; height: 100px;" class="img-thumbnail">
+                </td>
+                <td th:text="${#dates.format(image.uploadTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${image.custom.oname}"></td>
+                <td th:text="${image.status}"></td>
+                <td>
+                    <form th:action="@{/house/reviewImage}" method="post">
+                        <input type="hidden" name="imageId" th:value="${image.id}">
+                        <select name="status" class="form-control">
+                            <option value="approved">通过</option>
+                            <option value="rejected">拒绝</option>
+                        </select>
+                        <textarea name="comment" class="form-control" placeholder="审核意见"></textarea>
+                        <button type="submit" class="btn btn-primary">提交审核</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> 

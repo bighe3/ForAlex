@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>图片历史记录:物业管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- The styles -->
+    <link id="bs-css" href="../../static/css/bootstrap-cerulean.min.css" rel="stylesheet">
+    <link href="../../static/css/charisma-app.css" rel="stylesheet">
+    <link href='../../static/css/animate.min.css' rel='stylesheet'>
+    
+    <!-- jQuery -->
+    <script src="../../static/bower_components/jquery/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="ch-container">
+    <div class="row">
+        <div id="content" class="col-lg-12 col-sm-12">
+            <div class="row">
+                <div class="box col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-picture"></i> 图片历史记录</h2>
+                        </div>
+                        <div class="box-content">
+                            <div class="alert alert-info" th:if="${images.empty}">
+                                暂无历史记录
+                            </div>
+                            <div class="row" th:if="${!images.empty}">
+                                <div class="col-md-4" th:each="image : ${images}">
+                                    <div class="thumbnail">
+                                        <img th:src="${image.path}" alt="图片" style="max-width: 100%; height: auto;">
+                                        <div class="caption">
+                                            <p><strong>状态：</strong> <span th:text="${image.status}"></span></p>
+                                            <p><strong>上传时间：</strong> <span th:text="${#dates.format(image.uploadTime, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                                            <p th:if="${image.approvedTime != null}">
+                                                <strong>审核时间：</strong> <span th:text="${#dates.format(image.approvedTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                            </p>
+                                            <p><strong>审核意见：</strong> <span th:text="${image.reviewComment}"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <a href="javascript:history.back()" class="btn btn-primary">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- external javascript -->
+<script src="../../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../static/js/charisma.js"></script>
+</body>
+</html>

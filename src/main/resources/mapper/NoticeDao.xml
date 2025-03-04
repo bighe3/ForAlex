@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjh.communitysadministrativesystem.dao.NoticeDao">
+    <resultMap id="NoticeResultMap" type="com.hjh.communitysadministrativesystem.Entity.notice">
+        <id property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="pubDate" column="pub_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result property="publisher" column="publisher" />
+        <result property="content" column="content" />
+    </resultMap>
+    <select id="findAllNotice" resultMap="NoticeResultMap">
+        select * from notice_table;
+    </select>
+
+    <select id="selectById" resultMap="NoticeResultMap">
+        select * from notice_table where id=#{id};
+    </select>
+
+    <update id="updateNotice">
+        update notice_table set title=#{title},pub_date=#{pubDate},publisher=#{publisher},content=#{content} where id=#{id};
+    </update>
+
+    <insert id="addNotice">
+        insert into notice_table values(#{id},#{title},#{pubDate},#{publisher},#{content});
+    </insert>
+
+    <delete id="deleteById">
+        delete from notice_table where id=#{id};
+    </delete>
+
+</mapper>

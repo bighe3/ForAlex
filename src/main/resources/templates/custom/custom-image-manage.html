@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>业主图片管理</title>
+    <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/charisma-app.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">业主图片管理</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- 上传表单 -->
+                    <div class="upload-section">
+                        <form action="/Image/upload" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="file">选择图片：</label>
+                                <input type="file" id="file" name="file" accept="image/*" class="form-control" required>
+                                <input type="hidden" name="customId" th:value="${customId}" th:if="${customId != null}">
+                                <!-- 显示当前用户ID，用于调试 -->
+                                <div class="mt-2">
+                                    <small class="text-muted">当前用户ID: <span th:text="${customId != null ? customId : '未设置'}"></span></small>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" th:disabled="${customId == null}">上传</button>
+                            <a th:href="@{/user/customindex}" class="btn btn-default">返回</a>
+                        </form>
+                    </div>
+
+                    <!-- 显示错误或成功消息 -->
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <span th:text="${error}"></span>
+                    </div>
+                    <div th:if="${success}" class="alert alert-success" role="alert">
+                        <span th:text="${success}"></span>
+                    </div>
+
+                    <!-- 显示上传的图片 -->
+                    <div class="image-gallery mt-4">
+                        <h4>已上传的图片</h4>
+                        <div class="row">
+                            <div th:each="image : ${images}" class="col-md-4 mb-3">
+                                <div class="card">
+                                    <img th:src="${image.path}" class="card-img-top" th:alt="${image.oldName}">
+                                    <div class="card-body">
+                                        <p class="card-text" th:text="${image.oldName}"></p>
+                                        <form th:action="@{/Image/delete/{id}(id=${image.id})}" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm" 
+                                                    onclick="return confirm('确定要删除这张图片吗？')">删除</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.upload-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.btn {
+    margin-right: 5px;
+}
+</style>
+</body>
+</html> 

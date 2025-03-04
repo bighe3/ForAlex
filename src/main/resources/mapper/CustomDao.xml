@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjh.communitysadministrativesystem.dao.CustomDao">
+    <select id="selectAllCustom" resultType="Custom">
+        select * from custom;
+    </select>
+    <select id="selectOneById" resultMap="CustomResultMap">
+        select * from custom where oid=#{oid};
+    </select>
+    <update id="updateCustom" parameterType="Custom">
+        update custom
+        set oaccount=#{oaccount},
+            opassword=#{opassword},
+            oname=#{oname},
+            osex=#{osex},
+            oage=#{oage},
+            ohousenum=#{ohousenum},
+            oparkingspacesnum=#{oparkingspacesnum},
+            ocarnum=#{ocarnum},
+            oannualrent=#{oannualrent},
+            opaymenttime=#{opaymenttime},
+            opendingrepairs=#{opendingrepairs}
+        where oid=#{oid};
+    </update>
+    <select id="selectOne" resultType="Custom">
+        select * from custom where oaccount=#{aaccount} and opassword=#{apassword};
+    </select>
+    <insert id="addCustom" parameterType="Custom">
+        insert into custom (
+            oid,
+            oaccount,
+            opassword,
+            oname,
+            ophone,
+            osex,
+            oage,
+            ohousenum,
+            oparkingspacesnum,
+            ocarnum,
+            oannualrent,
+            opaymenttime,
+            opendingrepairs,
+            house_area
+        )
+        values (
+                   #{oid},
+                   #{oaccount},
+                   #{opassword},
+                   #{oname},
+                    #{ophone},
+                   #{osex},
+                   #{oage},
+                   #{ohousenum},
+                   #{oparkingspacesnum},
+                   #{ocarnum},
+                   #{oannualrent},
+                   #{opaymenttime},
+                   #{opendingrepairs},
+                    #{house_area}
+               );
+    </insert>
+    <delete id="deleteById">
+        delete from custom where oid=#{oid};
+    </delete>
+    <select id="selectLastOwner" resultType="Custom">
+        select * from custom order by oid desc limit 1;
+    </select>
+    <select id="searchCustoms" resultType="Custom">
+        SELECT * FROM custom 
+        WHERE oname LIKE #{keyword} 
+           OR ophone LIKE #{keyword}
+        ORDER BY oid DESC
+    </select>
+    <resultMap id="CustomResultMap" type="Custom">
+        <result property="ohousenum" column="ohousenum"/>
+        <result property="house_area" column="house_area"/>
+    </resultMap>
+</mapper>

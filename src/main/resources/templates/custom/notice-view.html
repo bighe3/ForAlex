@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>公告详情:物业管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link id="bs-css" href="../../static/css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="../../static/css/charisma-app.css" rel="stylesheet">
+    <link href='../../static/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='../../static/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='../../static/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='../../static/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='../../static/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='../../static/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='../../static/css/jquery.noty.css' rel='stylesheet'>
+    <link href='../../static/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='../../static/css/elfinder.min.css' rel='stylesheet'>
+    <link href='../../static/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='../../static/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='../../static/css/uploadify.css' rel='stylesheet'>
+    <link href='../../static/css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="../../static/bower_components/jquery/jquery.min.js"></script>
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="../../static/img/favicon.ico">
+</head>
+<body>
+    <!-- topbar starts -->
+    <div class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-inner">
+            <button type="button" class="navbar-toggle pull-left animated flip">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/user/customindex"> <img
+                    alt="Charisma Logo" src="../../static/img/logo20.png" class="hidden-xs" /> <span>物业管理系统</span></a>
+
+            <!-- user dropdown starts -->
+            <div class="btn-group pull-right">
+                <button class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span class="hidden-sm hidden-xs" th:text="${session.custom.getOname()}"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/user/logout">注销登录</a></li>
+                </ul>
+            </div>
+            <!-- user dropdown ends -->
+        </div>
+            <!-- user dropdown ends -->
+        </div>
+    <!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+        
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked"></div>
+                    <ul class="nav nav-pills nav-stacked main-menu">
+                        <li class="nav-header">功能</li>
+                        <li><a class="ajax-link" href="/user/customindex"><i class="glyphicon glyphicon-home"></i><span> &ensp;首&ensp;页</span></a>
+                        <li><a class="ajax-link" href="/user/NoticeList"><i class="glyphicon glyphicon-envelope"></i><span> &ensp;公&ensp;告&ensp;查&ensp;询</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findCustomMaintainById(custom_id=${session.custom.getOid()})}"><i class="glyphicon glyphicon-wrench"></i><span> &ensp;报&ensp;修&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findCustomById(oid=${session.custom.getOid()})}"><i class="glyphicon glyphicon-user"></i><span> &ensp;业&ensp;主&ensp;信&ensp;息</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findCustomByIdToHouse(custom_id=${session.custom.getOid() })}"><i class="glyphicon glyphicon-list-alt"></i><span> &ensp;房&ensp;产&ensp;信&ensp;息</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findByIdToCharge(custom_id=${session.custom.getOid() })}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;收&ensp;费&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/toWalletByCustomOid(custom_oid=${session.custom.getOid()})}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;我&ensp;的&ensp;钱&ensp;包</span></a>
+                        <li><a class="ajax-link" href="/user/toFeedbackList"><i class="glyphicon glyphicon-home"></i><span> &ensp;业&ensp;主&ensp;反&ensp;馈&ensp;</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/log(custom_oid=${session.custom.getOid()})}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;日&ensp;志</span></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--/span-->
+        <!-- left menu ends -->
+
+        <noscript>
+            <div class="alert alert-block col-md-12">
+                <h4 class="alert-heading">Warning!</h4>
+
+                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
+                    enabled to use this site.</p>
+            </div>
+        </noscript>
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="/user/customindex">首页</a>
+        </li>
+        <li>
+            <a href="/user/NoticeList">公告查询</a>
+        </li>
+        <li>
+            <a href="#">内容</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+	<div class="box col-md-12">
+		<div class="box-inner">
+			<div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-envelope"></i> 内容</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="page-header">
+                    <h3 th:text="${notice.title}"><br></h3>
+
+                    <h3> 日期：<p th:text="${notice.PubDate}"></p>发布者：<p th:text="${notice.publisher}"></p>
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p th:text="${notice.content}">
+                        </p>
+                    </div>
+                </div>
+                <a href="/user/NoticeList" class="btn btn-info">返&ensp;回&ensp;</a>
+            </div>
+		</div>
+	</div>
+</div>
+
+
+
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>确认提交</h3>
+                </div>
+                <div class="modal-body">
+                    <p>信息将被提交。</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">取消</a>
+                    <a href="#" class="btn btn-primary" data-dismiss="modal">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+<script src="../../static/js/validator.min.js"></script>
+<script src="../../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="../../static/js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='../../static/bower_components/moment/min/moment.min.js'></script>
+<script src='../../static/bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='../../static/js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="../../static/bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="../../static/bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="../../static/js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="../../static/bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="../../static/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="../../static/js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="../../static/js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="../../static/js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="../../static/js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="../../static/js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<script src="../../static/js/charisma.js"></script>
+
+
+</body>
+</html>
+

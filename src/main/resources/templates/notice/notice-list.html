@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>公告管理:物业管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link id="bs-css" th:href="@{/css/bootstrap-cerulean.min.css}" rel="stylesheet">
+
+    <link th:href="@{/css/charisma-app.css}" rel="stylesheet">
+    <link href='../../static/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='../../static/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='../../static/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='../../static/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='../../static/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='../../static/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='../../static/css/jquery.noty.css' rel='stylesheet'>
+    <link href='../../static/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='../../static/css/elfinder.min.css' rel='stylesheet'>
+    <link href='../../static/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='../../static/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='../../static/css/uploadify.css' rel='stylesheet'>
+    <link href='../../static/css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script th:src="@{/bower_components/jquery/jquery.min.js}"></script>
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}">
+
+</head>
+
+<body>
+<!-- topbar starts -->
+<div class="navbar navbar-default" role="navigation">
+
+    <div class="navbar-inner">
+        <button type="button" class="navbar-toggle pull-left animated flip">
+            <span class="sr-only">Toggle navigation</span> <span
+                class="icon-bar"></span> <span class="icon-bar"></span> <span
+                class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/admin/adminindex}"> <img
+                alt="Charisma Logo" th:src="@{/img/logo20.png}" class="hidden-xs" /> <span>物业管理系统</span></a>
+
+        <!-- user dropdown starts -->
+        <div class="btn-group pull-right">
+            <button class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown">
+                <i class="glyphicon glyphicon-user"></i>
+                <span class="hidden-sm hidden-xs" th:text="${session.adminUser.getAname()}"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a th:href="@{/admin/logout}">注销登录</a></li>
+            </ul>
+        </div>
+        <!-- user dropdown ends -->
+    </div>
+</div>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked"></div>
+                    <ul class="nav nav-pills nav-stacked main-menu">
+                        <li class="nav-header">功能</li>
+                        <li><a class="ajax-link" th:href="@{/admin/tohome}"><i class="glyphicon glyphicon-home"></i><span> &ensp;首&ensp;页</span></a>
+                        <li><a class="ajax-link" th:href="@{/admin/adminlist}"><i class="glyphicon glyphicon-cog"></i><span> &ensp;管&ensp;理&ensp;员&ensp;信&ensp;息</span></a>
+                        <li><a class="ajax-link" th:href="@{/Maintain/toMaintain}"><i class="glyphicon glyphicon-wrench"></i><span> &ensp;报&ensp;修&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/notice/noticeList}"><i class="glyphicon glyphicon-envelope"></i><span> &ensp;公&ensp;告&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/Feedback/toFeedback}"><i class="glyphicon glyphicon-info-sign"></i><span> &ensp;业&ensp;主&ensp;反&ensp;馈</span></a>
+                        <li><a class="ajax-link" th:href="@{/custom/selectAllCustom}"><i class="glyphicon glyphicon-user"></i><span> &ensp;业&ensp;主&ensp;信&ensp;息</span></a>
+                        <li><a class="ajax-link" th:href="@{/house/houseList}"><i class="glyphicon glyphicon-list-alt"></i><span> &ensp;房&ensp;产&ensp;信&ensp;息</span></a>
+                        <li><a class="ajax-link" th:href="@{/charge/toChargeList}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;收&ensp;费&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/wallet/WalletList}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;钱&ensp;包&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/admin/log}"><i class="glyphicon glyphicon-list"></i><span> &ensp;日&ensp;志&ensp;管&ensp;理</span></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+        <!-- left menu ends -->
+
+        <noscript>
+            <div class="alert alert-block col-md-12">
+                <h4 class="alert-heading">Warning!</h4>
+
+                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
+                    enabled to use this site.</p>
+            </div>
+        </noscript>
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li>
+                        <a th:href="@{/admin/tohome}">首页</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/notice/noticeList}">公告管理</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="box col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-envelope"></i> 公告管理</h2>
+
+                            <div class="box-icon">
+                                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                        class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" id="tables">
+                                <thead>
+                                <a class="btn btn-success" th:href="@{/notice/toaddnotice}">
+                                    <i class="glyphicon glyphicon-plus icon-white"></i>
+                                    &ensp;添&ensp;加&ensp;记&ensp;录
+                                </a>
+                                <button type="button" id="export" style="float:right" class="btn btn-primary" ><i class="glyphicon glyphicon-download-alt icon-white"></i>
+                                	&ensp;数&ensp;据&ensp;导&ensp;出</button>
+                                <br/>
+                                <br/>
+                                <tr>
+							        <th>公告题目</th>
+							        <th>发布日期</th>
+							        <th>发布者</th>
+							        <th>操作</th>
+							    </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="notice : ${notice}">
+                                    <td align="center" th:text="${notice.title}">标题</td>
+                                    <td align="center" th:text="${notice.pubDate}">日期</td>
+                                    <td align="center" th:text="${notice.publisher}">发布人</td>
+                                    <td class="center">
+                                        <a class="btn btn-info" th:href="@{/notice/noticeSelectToEdit(id=${notice.id})}">
+                                            <i class="glyphicon glyphicon-edit icon-white"></i>
+                                            编&ensp;辑
+                                        </a>
+                                        <a class="btn btn-danger" href="#" th:attr="data-id=${notice.id}" data-toggle="modal" data-target="#myModal">
+                                            <i class="glyphicon glyphicon-trash icon-white"></i>
+                                            删&ensp;除
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+
+            </div><!--/row-->
+
+
+            <!-- content ends -->
+        </div><!--/#content.col-md-0-->
+    </div><!--/fluid-row-->
+
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>确认？</h3>
+                </div>
+                <div class="modal-body">
+                    <p>此条记录将被永久删除</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">取消</a>
+                    <a class="btn btn-danger btn-ok">确认删除</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+
+<!-- library for cookie management -->
+<script th:src="@{/js/jquery.cookie.js}"></script>
+<!-- calender plugin -->
+<script src='../../static/bower_components/moment/min/moment.min.js'></script>
+<script src='../../static/bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script th:src="@{/js/jquery.dataTables.min.js}"></script>
+<!-- select or dropdown enhancer -->
+<script th:src="@{/bower_components/chosen/chosen.jquery.min.js}"></script>
+<!-- plugin for gallery image view -->
+<script th:src="@{/bower_components/colorbox/jquery.colorbox-min.js}"></script>
+<!-- notification plugin -->
+<script th:src="@{/js/jquery.noty.js}"></script>
+<!-- library for making tables responsive -->
+<script th:src="@{/bower_components/responsive-tables/responsive-tables.js}"></script>
+<!-- tour plugin -->
+<script th:src="@{/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js}"></script>
+<!-- star rating plugin -->
+<script th:src="@{/js/jquery.raty.min.js}"></script>
+<!-- for iOS style toggle switch -->
+<script th:src="@{/js/jquery.iphone.toggle.js}"></script>
+<!-- autogrowing textarea plugin -->
+<script th:src="@{/js/jquery.autogrow-textarea.js}"></script>
+<!-- multiple file upload plugin -->
+<script th:src="@{/js/jquery.uploadify-3.1.min.js}"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script th:src="@{/js/jquery.history.js}"></script>
+<!-- application script for Charisma demo -->
+<script th:src="@{/js/charisma.js}"></script>
+<script th:src="@{/js/base64.js}"></script>
+<script th:src="@{/js/tableExport.js}"></script>
+<script th:src="@{/js/FileSaver.min.js}"></script>
+<script>
+    $('#myModal').on('show.bs.modal', function(e) {
+        var deleteId = $(e.relatedTarget).data('id'); // 获取数据属性中的ID
+        $(this).find('.btn-ok').attr('href', '/notice/noticedelete?id=' + deleteId); // 设置删除链接
+    });
+
+    // 添加点击确认按钮后的处理逻辑
+    $(document).on('click', '.btn-ok', function(e) {
+        e.preventDefault(); // 阻止默认行为
+        var deleteUrl = $(this).attr('href');
+        if (deleteUrl) {
+            window.location.href = deleteUrl; // 执行删除操作
+        }
+    });
+    $("#export").click(function(){
+        $("#tables").tableExport({
+        	type:"excel",
+        	fileName: new Date().getTime(),
+        	escape:"false",
+        	ignoreColumn:'[3]'
+        	});
+    });
+</script>
+
+</body>
+</html>

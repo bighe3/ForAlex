@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjh.communitysadministrativesystem.dao.MaintainDao">
+    <!-- 定义 resultMap 来映射 maintain 和 custom 的数据 -->
+    <resultMap id="MaintainWithCustomResultMap" type="Maintain">
+        <id property="mid" column="mid"/>
+        <result property="maintainer" column="maintainer"/>
+        <result property="sdate" column="sdate"/>
+        <result property="thing" column="thing"/>
+        <result property="status" column="status"/>
+        <result property="homesnumber" column="homesnumber"/>
+        <result property="rdate" column="rdate"/>
+        <result property="tcost" column="tcost"/>
+        <result property="scost" column="scost"/>
+        <result property="smemo" column="smemo"/>
+        <result property="custom_id" column="custom_id"/>
+        <association property="custom" javaType="Custom">
+            <id property="oid" column="oid"/>
+            <result property="oaccount" column="oaccount"/>
+            <result property="opassword" column="opassword"/>
+            <result property="oname" column="oname"/>
+            <result property="osex" column="osex"/>
+            <result property="oage" column="oage"/>
+            <result property="ohousenum" column="ohousenum"/>
+            <result property="oparkingspacesnum" column="oparkingspacesnum"/>
+            <result property="ocarnum" column="ocarnum"/>
+            <result property="oannualrent" column="oannualrent"/>
+            <result property="opaymenttime" column="opaymenttime"/>
+            <result property="opendingrepairs" column="opendingrepairs"/>
+        </association>
+    </resultMap>
+    <select id="findallMaintain" resultType="Maintain">
+            select * from maintain;
+    </select>
+    <select id="findMaintainById" resultType="Maintain">
+            select * from maintain where mid=#{mid};
+    </select>
+    <insert id="addMaintain" parameterType="Maintain">
+            insert into maintain values(#{mid},#{maintainer},#{sdate},#{thing},#{status},#{homesnumber},#{rdate},#{tcost},#{scost},#{smemo},#{custom_id})
+    </insert>
+    <update id="updateMaintain" parameterType="Maintain">
+            update maintain set maintainer=#{maintainer},sdate=#{sdate},thing=#{thing},status=#{status},homesnumber=#{homesnumber},rdate=#{rdate},tcost=#{tcost},scost=#{scost},smemo=#{smemo} where mid=#{mid}
+    </update>
+    <delete id="deleteMaintain" parameterType="int">
+            delete from maintain where mid=#{mid}
+    </delete>
+    <select id="findMaintainsById" resultType="Maintain">
+            select * from maintain where mid=#{mid};
+    </select>
+    <!-- 查询所有 maintain 数据 -->
+    <select id="selectMaintainByCustomId" resultMap="MaintainWithCustomResultMap" parameterType="int">
+        SELECT m.*, c.*
+        FROM maintain m
+                 left join custom c on m.custom_id = c.oid
+        where m.custom_id = #{custom_Id}
+    </select>
+
+</mapper>

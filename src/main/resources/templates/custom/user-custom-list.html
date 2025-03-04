@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>业主主页:物业管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+
+    <!-- The styles -->
+    <link id="bs-css" href="../../static/css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="../../static/css/charisma-app.css" rel="stylesheet">
+    <link href='../../static/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='../../static/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='../../static/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='../../static/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='../../static/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='../../static/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='../../static/css/jquery.noty.css' rel='stylesheet'>
+    <link href='../../static/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='../../static/css/elfinder.min.css' rel='stylesheet'>
+    <link href='../../static/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='../../static/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='../../static/css/uploadify.css' rel='stylesheet'>
+    <link href='../../static/css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="../../static/bower_components/jquery/jquery.min.js"></script>
+
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="../../static/img/favicon.ico">
+
+</head>
+
+<body>
+<!-- topbar starts -->
+<div class="navbar navbar-default" role="navigation">
+
+    <div class="navbar-inner">
+        <button type="button" class="navbar-toggle pull-left animated flip">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/user/customindex"> <img alt="Charisma Logo" src="../../static/img/logo20.png" class="hidden-xs"/>
+            <span>物业管理系统</span></a>
+
+        <!-- user dropdown starts -->
+        <div class="btn-group pull-right">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs" th:text="${session.custom.getOname()}"> </span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/user/logout">注销登录</a></li>
+            </ul>
+        </div>
+        <!-- user dropdown ends -->
+    </div>
+</div>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked"></div>
+                    <ul class="nav nav-pills nav-stacked main-menu">
+                        <li class="nav-header">功能</li>
+                        <li><a class="ajax-link" href="/user/customindex"><i class="glyphicon glyphicon-home"></i><span> &ensp;首&ensp;页</span></a>
+                        <li><a class="ajax-link" href="/user/NoticeList"><i class="glyphicon glyphicon-envelope"></i><span> &ensp;公&ensp;告&ensp;查&ensp;询</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findCustomMaintainById(custom_id=${session.custom.getOid()})}"><i class="glyphicon glyphicon-wrench"></i><span> &ensp;报&ensp;修&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findCustomById(oid=${session.custom.getOid()})}"><i class="glyphicon glyphicon-user"></i><span> &ensp;业&ensp;主&ensp;信&ensp;息</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findCustomByIdToHouse(custom_id=${session.custom.getOid() })}"><i class="glyphicon glyphicon-list-alt"></i><span> &ensp;房&ensp;产&ensp;信&ensp;息</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/findByIdToCharge(custom_id=${session.custom.getOid() })}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;收&ensp;费&ensp;管&ensp;理</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/toWalletByCustomOid(custom_oid=${session.custom.getOid()})}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;我&ensp;的&ensp;钱&ensp;包</span></a>
+                        <li><a class="ajax-link" href="/user/toFeedbackList"><i class="glyphicon glyphicon-home"></i><span> &ensp;业&ensp;主&ensp;反&ensp;馈&ensp;</span></a>
+                        <li><a class="ajax-link" th:href="@{/user/log(custom_oid=${session.custom.getOid()})}"><i class="glyphicon glyphicon-usd"></i><span> &ensp;日&ensp;志</span></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--/span-->
+        <!-- left menu ends -->
+
+        <noscript>
+            <div class="alert alert-block col-md-12">
+                <h4 class="alert-heading">Warning!</h4>
+
+                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
+                    enabled to use this site.</p>
+            </div>
+        </noscript>
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="/user/customindex">首页</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/findCustomById(oid=${session.custom.getOid()})}">业主信息</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="box col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-user"></i> 业主信息</h2>
+
+                            <div class="box-icon">
+                                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                        class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a href="#" class="btn btn-close btn-round btn-default"><i
+                                        class="glyphicon glyphicon-remove"></i></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+                            <div th:if="${session.custom == null}" class="alert alert-warning" role="alert">
+                                <strong>提示：</strong> 您尚未登录，请先登录后再进行操作。
+                            </div>
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" id="customTable">
+                                <thead>
+                                <tr>
+                                    <th>用户名</th>
+                                    <th>账户密码</th>
+                                    <th>业主编号</th>
+                                    <th>业主姓名</th>
+                                    <th>业主性别</th>
+                                    <th>业主年龄</th>
+                                    <th>房产编号</th>
+                                    <th>停车位编号</th>
+                                    <th>车牌号</th>
+                                    <th>年租金</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- 数据将通过 Thymeleaf 绑定到这里 -->
+                                <tr th:each="custom : ${custom}">
+                                    <td th:text="${custom.oaccount}"></td>
+                                    <td th:text="${custom.opassword}"></td>
+                                    <td th:text="${custom.oid}"></td>
+                                    <td th:text="${custom.oname}"></td>
+                                    <td th:text="${custom.osex}"></td>
+                                    <td th:text="${custom.oage}"></td>
+                                    <td th:text="${custom.ohousenum}"></td>
+                                    <td th:text="${custom.oparkingspacesnum}"></td>
+                                    <td th:text="${custom.ocarnum}"></td>
+                                    <td th:text="${custom.oannualrent}"></td>
+                                    <td class="center">
+                                        <a class="btn btn-info" th:href="@{/user/toEditById(oid=${custom.oid})}">
+                                            <i class="glyphicon glyphicon-edit icon-white"></i>
+                                            编&ensp;辑
+                                        </a>
+                                        <a class="btn btn-danger" href="#" th:attr="data-id=${custom.oid}" data-toggle="modal" data-target="#myModal">
+                                            <i class="glyphicon glyphicon-trash icon-white"></i>
+                                            注&ensp;销
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- content ends -->
+        </div><!--/#content.col-md-0-->
+    </div><!--/fluid-row-->
+
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>确认？</h3>
+                </div>
+                <div class="modal-body">
+                    <p>此条记录将被永久删除</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">取消</a>
+                    <a class="btn btn-danger btn-ok">确认删除</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="../../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="../../static/js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='../../static/bower_components/moment/min/moment.min.js'></script>
+<script src='../../static/bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src="../../static/js/jquery.dataTables.min.js"></script>
+<!-- select or dropdown enhancer -->
+<script src="../../static/bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="../../static/bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="../../static/js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="../../static/bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="../../static/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="../../static/js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="../../static/js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="../../static/js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="../../static/js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="../../static/js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<script src="../../static/js/charisma.js"></script>
+<script src="../../static/js/base64.js"></script>
+<script src="../../static/js/tableExport.js"></script>
+<script src="../../static/js/FileSaver.min.js"></script>
+<script>
+    $('#myModal').on('show.bs.modal', function(e) {
+        var deleteId = $(e.relatedTarget).data('id'); // 获取数据属性中的ID
+        $(this).find('.btn-ok').attr('href', '/user/userDelete?id=' + deleteId); // 设置删除链接
+    });
+
+    // 添加点击确认按钮后的处理逻辑
+    $(document).on('click', '.btn-ok', function(e) {
+        e.preventDefault(); // 阻止默认行为
+        var deleteUrl = $(this).attr('href');
+        if (deleteUrl) {
+            window.location.href = deleteUrl; // 执行删除操作
+        }
+    });
+    $("#export").click(function(){
+        $("#tables").tableExport({
+        	type:"excel",
+        	fileName: new Date().getTime(),
+        	escape:"false",
+        	//ignoreColumn:'[8]'
+        	});
+    });
+
+    function uploadImage() {
+        const fileInput = document.getElementById('imageFile');
+        const customIdInput = document.getElementById('customId');
+        
+        if (!customIdInput) {
+            console.error('找不到customId输入框');
+            alert('系统错误：找不到用户ID');
+            return;
+        }
+        
+        const customId = customIdInput.value;
+        console.log('Uploading with customId:', customId); // 调试日志
+        
+        if (!customId) {
+            console.error('customId为空');
+            alert('用户ID不能为空，请先登录');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('请选择图片文件');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('customId', customId);
+
+        // 打印整个FormData的内容（调试用）
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        $.ajax({
+            url: '/Image/upload',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log('Upload response:', response);
+                if (response.success) {
+                    alert('上传成功');
+                    loadImages();
+                    fileInput.value = '';
+                } else {
+                    alert(response.message || '上传失败');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Upload error:', {xhr, status, error});
+                alert('上传失败：' + (xhr.responseJSON?.message || error));
+            }
+        });
+    }
+
+    function loadImages() {
+        const customId = document.getElementById('customId').value;
+        if (!customId) {
+            console.warn('用户ID不存在，跳过加载图片');
+            return;
+        }
+        
+        $.ajax({
+            url: '/Image/list/' + customId,
+            type: 'GET',
+            success: function(images) {
+                const container = document.getElementById('imageContainer');
+                container.innerHTML = '';
+                
+                images.forEach(image => {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-3 mb-3';
+                    col.innerHTML = `
+                        <div class="card">
+                            <img src="${image.path}" class="card-img-top" alt="${image.oldName}">
+                            <div class="card-body">
+                                <p class="card-text">${image.oldName}</p>
+                                <button class="btn btn-danger btn-sm" onclick="deleteImage(${image.id})">删除</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(col);
+                });
+            }
+        });
+    }
+
+    function deleteImage(imageId) {
+        const customId = document.getElementById('customId').value;
+        if (!customId) {
+            alert('用户ID不能为空，请先登录');
+            return;
+        }
+        
+        if (confirm('确定要删除这张图片吗？')) {
+            $.ajax({
+                url: '/Image/delete/' + imageId,
+                type: 'DELETE',
+                success: function(response) {
+                    if (response.success) {
+                        alert('删除成功');
+                        loadImages();
+                    } else {
+                        alert(response.message || '删除失败');
+                    }
+                }
+            });
+        }
+    }
+
+    // 页面加载时检查用户ID
+    $(document).ready(function() {
+        const customIdInput = document.getElementById('customId');
+        if (customIdInput) {
+            const customId = customIdInput.value;
+            console.log('Page load - CustomId:', customId);
+            if (customId) {
+                loadImages();
+            } else {
+                console.warn('No customId found on page load');
+            }
+        } else {
+            console.error('CustomId input element not found');
+        }
+    });
+
+    function openFileInput(button) {
+        const customId = button.getAttribute('data-custom-id');
+        if (!customId) {
+            alert('无法获取用户ID');
+            return;
+        }
+
+        // 创建一个隐藏的文件输入框
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+
+        // 监听文件选择
+        fileInput.addEventListener('change', function() {
+            const file = fileInput.files[0];
+            if (file) {
+                uploadImageForCustom(file, customId);
+            }
+            // 清理临时创建的元素
+            document.body.removeChild(fileInput);
+        });
+
+        // 触发文件选择对话框
+        fileInput.click();
+    }
+
+    function uploadImageForCustom(file, customId) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('customId', customId);
+
+        // 显示上传进度提示
+        const loadingToast = $('<div class="alert alert-info">正在上传图片...</div>');
+        $('.box-content').prepend(loadingToast);
+
+        $.ajax({
+            url: '/Image/upload',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                loadingToast.remove();
+                if (response.success) {
+                    showSuccessMessage('图片上传成功');
+                    // 可以在这里更新图片显示
+                    loadImagesForCustom(customId);
+                } else {
+                    showErrorMessage(response.message || '上传失败');
+                }
+            },
+            error: function(xhr, status, error) {
+                loadingToast.remove();
+                showErrorMessage('上传失败：' + (xhr.responseJSON?.message || error));
+            }
+        });
+    }
+
+    function loadImagesForCustom(customId) {
+        $.ajax({
+            url: '/Image/list/' + customId,
+            type: 'GET',
+            success: function(images) {
+                // 可以在这里更新图片显示
+                if (images && images.length > 0) {
+                    // 更新最新的图片显示
+                    const latestImage = images[0];
+                    // 这里可以根据需要更新UI显示
+                }
+            }
+        });
+    }
+
+    function showSuccessMessage(message) {
+        const alert = $('<div class="alert alert-success">' + message + '</div>');
+        $('.box-content').prepend(alert);
+        setTimeout(() => alert.fadeOut('slow', () => alert.remove()), 3000);
+    }
+
+    function showErrorMessage(message) {
+        const alert = $('<div class="alert alert-danger">' + message + '</div>');
+        $('.box-content').prepend(alert);
+        setTimeout(() => alert.fadeOut('slow', () => alert.remove()), 3000);
+    }
+
+    function logNavigation(customId) {
+        console.log('Navigating to image manage with customId: ' + customId);
+    }
+</script>
+
+<style>
+.image-upload-section {
+    margin-top: 20px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+
+#imagePreview img {
+    max-width: 100%;
+    height: auto;
+}
+
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    min-width: 200px;
+    text-align: center;
+}
+
+.btn-primary {
+    margin: 0 2px;
+}
+
+.glyphicon {
+    margin-right: 5px;
+}
+</style>
+
+</body>
+</html>

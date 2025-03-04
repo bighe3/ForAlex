@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjh.communitysadministrativesystem.dao.ChargeDao">
+    <insert id="insertCharge" parameterType="Charge" useGeneratedKeys="true" keyProperty="id">
+        insert into charge(
+            name, metre, username, status, 
+            sdate, tcost, scost, smemo, custom_id, bill_month
+        ) values(
+            #{name}, #{metre}, #{username}, #{status}, 
+            #{sdate}, #{tcost}, #{scost}, #{smemo}, #{custom_id}, #{billMonth}
+        )
+    </insert>
+
+    <delete id="deleteCharge" parameterType="int">
+        delete from charge where id=#{id}
+    </delete>
+
+    <delete id="deleteByCustomId" parameterType="int">
+        delete from charge where custom_id = #{customId}
+    </delete>
+
+    <update id="updateCharge" parameterType="Charge">
+        update charge 
+        set name=#{name}, 
+            metre=#{metre}, 
+            username=#{username}, 
+            status=#{status}, 
+            sdate=#{sdate}, 
+            rdate=#{rdate}, 
+            tcost=#{tcost}, 
+            scost=#{scost}, 
+            smemo=#{smemo}, 
+            custom_id=#{custom_id},
+            bill_month=#{billMonth} 
+        where id=#{id}
+    </update>
+
+    <select id="getChargeById" parameterType="Long" resultMap="ChargeCustomResultMap">
+        SELECT c.*, cu.oid as custom_oid,
+           cu.oaccount, cu.opassword, cu.oname, cu.osex, cu.oage,
+           cu.ohousenum, cu.house_area, cu.oparkingspacesnum,
+           cu.ocarnum, cu.oannualrent, cu.opaymenttime,
+           cu.opendingrepairs, cu.ophone
+        FROM charge c
+        LEFT JOIN custom cu ON c.custom_id = cu.oid
+        WHERE c.id = #{id}
+    </select>
+
+    <select id="selectAllCharge" resultMap="ChargeCustomResultMap">
+        SELECT c.*, cu.oid as custom_oid,
+           cu.oaccount, cu.opassword, cu.oname, cu.osex, cu.oage,
+           cu.ohousenum, cu.house_area, cu.oparkingspacesnum,
+           cu.ocarnum, cu.oannualrent, cu.opaymenttime,
+           cu.opendingrepairs, cu.ophone
+        FROM charge c
+        LEFT JOIN custom cu ON c.custom_id = cu.oid
+        ORDER BY c.sdate DESC, c.id DESC
+    </select>
+
+    <select id="selectChargeByName" parameterType="String" resultType="Charge">
+        select * from charge where name=#{name}
+    </select>
+
+    <!-- 定义结果映射 -->
+    <resultMap id="ChargeCustomResultMap" type="Charge">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="metre" column="metre"/>
+        <result property="username" column="username"/>
+        <result property="status" column="status"/>
+        <result property="sdate" column="sdate"/>
+        <result property="rdate" column="rdate"/>
+        <result property="tcost" column="tcost"/>
+        <result property="scost" column="scost"/>
+        <result property="smemo" column="smemo"/>
+        <result property="custom_id" column="custom_id"/>
+        <result property="billMonth" column="bill_month"/>
+        <association property="custom" javaType="Custom">
+            <id property="oid" column="custom_oid"/>
+            <result property="oaccount" column="oaccount"/>
+            <result property="opassword" column="opassword"/>
+            <result property="oname" column="oname"/>
+            <result property="osex" column="osex"/>
+            <result property="oage" column="oage"/>
+            <result property="ohousenum" column="ohousenum"/>
+            <result property="house_area" column="house_area"/>
+            <result property="oparkingspacesnum" column="oparkingspacesnum"/>
+            <result property="ocarnum" column="ocarnum"/>
+            <result property="oannualrent" column="oannualrent"/>
+            <result property="opaymenttime" column="opaymenttime"/>
+            <result property="opendingrepairs" column="opendingrepairs"/>
+            <result property="ophone" column="ophone"/>
+        </association>
+    </resultMap>
+
+    <!-- 新增：通过 custom 的 oid 查询 charge 并包含 custom 信息 -->
+    <select id="selectChargeByCustomId" parameterType="int" resultMap="ChargeCustomResultMap">
+        select c.*, cu.*
+        from charge c
+        left join custom cu on c.custom_id = cu.oid
+        where c.custom_id = #{customId}
+        ORDER BY c.sdate DESC, c.id DESC
+    </select>
+
+    <!-- 添加新的查询方法 -->
+    <select id="selectChargeByMonth" resultMap="ChargeCustomResultMap">
+        SELECT c.*, cu.*
+        FROM charge c
+        LEFT JOIN custom cu ON c.custom_id = cu.oid
+        WHERE c.bill_month = #{billMonth}
+    </select>
+    
+    <!-- 批量插入月度账单 -->
+    <insert id="batchInsertCharges" parameterType="java.util.List">
+        INSERT INTO charge (
+            name, metre, username, status, 
+            sdate, tcost, scost, custom_id, bill_month, smemo
+        )
+        VALUES 
+        <foreach collection="list" item="charge" separator=",">
+            (#{charge.name}, #{charge.metre}, 
+             #{charge.username}, 'unpaid', #{charge.sdate}, 
+             #{charge.tcost}, #{charge.scost}, #{charge.custom_id}, 
+             #{charge.billMonth}, #{charge.smemo})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjh.communitysadministrativesystem.dao.OperationLogDao">
+
+    <!-- resultMap -->
+    <resultMap id="operationLogResultMap" type="OperationLog">
+        <result property="id" column="id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="operatorType" column="operator_type"/>
+        <result property="operatorName" column="operator_name"/>
+        <result property="operationType" column="operation_type"/>
+        <result property="operationDetail" column="operation_detail"/>
+        <result property="operationTime" column="operation_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+
+    <insert id="insert" parameterType="OperationLog">
+        INSERT INTO operation_logs (
+            operator_id, operator_type, operator_name,
+            operation_type, operation_detail, operation_time,
+            status
+        ) VALUES (
+            #{operatorId}, #{operatorType}, #{operatorName},
+            #{operationType}, #{operationDetail}, #{operationTime},
+            #{status}
+        )
+    </insert>
+    
+    <select id="selectAll" resultMap="operationLogResultMap">
+        SELECT * FROM operation_logs ORDER BY operation_time DESC
+    </select>
+    
+    <select id="selectByOperatorId" resultMap="operationLogResultMap">
+        SELECT * FROM operation_logs WHERE operator_id = #{operatorId}
+        ORDER BY operation_time DESC
+    </select>
+    
+    <select id="selectByOperatorType" resultMap="operationLogResultMap">
+        SELECT * FROM operation_logs WHERE operator_type = #{operatorType}
+        ORDER BY operation_time DESC
+    </select>
+
+    <select id="findLogsByType" resultMap="operationLogResultMap">
+        SELECT * FROM operation_logs WHERE operator_type = #{type};
+    </select>
+    <select id="findLogsByTypeAndOname" resultMap="operationLogResultMap">
+        SELECT * FROM operation_logs WHERE operator_type = #{type} AND operator_name = #{oname};
+    </select>
+    <select id="findAllLogs" resultMap="operationLogResultMap">
+        SELECT * FROM operation_logs;
+    </select>
+</mapper> 

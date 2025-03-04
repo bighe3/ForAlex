@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjh.communitysadministrativesystem.dao.AdminDao">
+    <select id="selectOne" resultType="adminUser">
+        select * from adminuser where aaccount=#{aaccount} and apassword=#{apassword};
+    </select>
+    <select id="selectList" resultType="adminUser">
+        select * from adminuser
+    </select>
+
+    <select id="findAll" resultType="adminUser">
+        select * from adminuser;
+    </select>
+
+
+    <select id="selectById" resultType="adminUser">
+        select * from adminuser where aid=#{aid};
+    </select>
+
+    <update id="updateAdmin">
+        update adminuser set apassword=#{apassword},aname=#{aname},asex=#{asex},aage=#{aage},aphone=#{aphone},addr=#{addr} where aid=#{aid}
+    </update>
+
+    <insert id="addAdmin">
+        insert into adminuser values(#{aid},#{aaccount},#{apassword},#{aname},#{asex},#{aage},#{aphone},#{addr})
+    </insert>
+
+    <delete id="deleteById">
+        delete from adminuser where aid=#{aid}
+    </delete>
+</mapper>
